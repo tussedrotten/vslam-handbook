@@ -4,7 +4,7 @@
 \title{A handbook in Visual SLAM}
 \author{Trym Vegard Haavardsholm}
 
-\date{Draft\\Updated 16.03.2021}
+\date{Version 0.0.1\\Updated 06.09.2021}
 
 \usepackage{import}
 \usepackage{biblatex}
@@ -46,18 +46,18 @@
 \tableofcontents
 \listofexamples
 
-\import{./}{introduction.tex}
-%\import{./}{image-formation.tex}
-\import{./}{3d_geometry.tex}
-\import{./}{camera-geometry.tex}
-\import{./}{lie-theory.tex}
-\import{./}{jacobians.tex}
-\import{./}{uncertainty.tex}
-\import{./}{nonlinear-ls.tex}
-\import{./}{pose-and-structure-estimation.tex}
-%\import{./}{vslam-intro.tex}
-% \import{./}{vslam-front.tex}
-% \import{./}{vslam-back.tex}
+\include{text/introduction}
+%\include{text/image-formation}
+\include{text/3d_geometry}
+\include{text/camera-geometry}
+\include{text/lie-theory}
+\include{text/jacobians}
+\include{text/uncertainty}
+\include{text/nonlinear-ls}
+\include{text/pose-and-structure-estimation}
+%\include{text/vslam-intro}
+% \include{text/vslam-front}
+% \include{text/vslam-back}
 
 
 \printbibliography[heading=bibintoc, title={Bibliography}]

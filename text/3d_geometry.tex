@@ -7,7 +7,7 @@ We will also introduce notation that makes the direction of these transformation
 \section{Points and coordinate frames} \label{sec:points-coordinate-frames}
 \begin{figure}[htb]
     \centering
-    \input{tikz_coordinate_frame.tex}
+    \input{tikz-illustrations/tikz_coordinate_frame}
     \caption{A point $X$ represented by a vector $\vecx^a$ in the coordinate frame $\cF_a$.}
     \label{fig:coordinate_frame}
 \end{figure}
@@ -64,7 +64,7 @@ See Hartley and Zisserman \cite{Hartley2004MultipleVision} for a detailed descri
 
 \begin{figure}[htb]
     \centering
-    \input{tikz_more_frames.tex}
+    \input{tikz-illustrations/tikz_more_frames}
     \caption{A point $X$ represented by a vector $\vecx^a$ in the coordinate frame $\cF_a$, and a corresponding vector $\vecx^b$ in the coordinate frame $\cF_b$.
     The pose $\matT_{ab}$ describes the position and orientation of $\cF_b$ relative to $\cF_a$.}
     \label{fig:more_frames}
@@ -80,7 +80,7 @@ We will in the following sections see how we can represent and apply such transf
 \section{Representing orientation} \label{sec:orientation}
 \begin{figure}[htb]
     \centering
-    \input{tikz_rotated-frames.tex}
+    \input{tikz-illustrations/tikz_rotated-frames}
     \caption{Two coordinate frames $\cF_a$ and $\cF_b$ with the same origin. The orientation of $\cF_b$ relative to $\cF_a$ is described by the rotation matrix $\matR_{ab}.$}
     \label{fig:rotated_frames}
 \end{figure}
@@ -131,7 +131,7 @@ Notice in Figure \ref{fig:coordinate-frame-notation} how the subscript and super
 \begin{example}[frametitle=Transforming detections between sensors]
 {
   \centering
-  \input{tikz_orientation_example.tex}
+  \input{tikz-illustrations/tikz_orientation_example}
   \captionsetup{type=figure}
   \captionof{figure}{Three differently oriented sensors.}
   \label{fig:orientation_example}
@@ -167,7 +167,7 @@ This is sometimes useful when assessing how coordinate systems relate to each ot
 \begin{example}[frametitle=Rotation matrix from basis vector perturbations]
 {
   \centering
-  \input{tikz_basis_perturbations_example.tex}
+  \input{tikz-illustrations/tikz_basis_perturbations_example}
   \captionsetup{type=figure}
   \captionof{figure}{Two coordinate frames with their corresponding basis vectors.}
   \label{fig:perturbed_basis_example}
@@ -285,7 +285,7 @@ We will in Chapters~\ref{sec:Lie-theory},~\ref{ch:jacobians} and \ref{ch:uncerta
 \section{Representing pose}
 \begin{figure}[htb]
     \centering
-    \input{tikz_pose-illustration.tex}
+    \input{tikz-illustrations/tikz_pose-illustration}
     \caption{Two coordinate frames $\cF_a$ and $\cF_b$ with different position and orientation. The pose of $\cF_b$ relative to $\cF_a$ is described by the orientation $\matR_{ab}$ and the translation $\vect^a_{ab}$ between the frame origins.}
     \label{fig:pose-illustration}
 \end{figure}
