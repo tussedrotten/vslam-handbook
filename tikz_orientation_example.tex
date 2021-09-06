@@ -1,0 +1,30 @@
+\tdplotsetmaincoords{10}{45}
+\begin{tikzpicture}[scale=2, tdplot_main_coords]
+  \coordinate (O) at (0,0,0);
+  \coordinate (P) at (1.75,2.25,0);
+  
+  \draw[thick, color=green!50!black,->] (O) -- (1,0,0);
+  \draw[thick, color=green!50!black,->] (O) -- (0,1,0);
+  \draw[thick, color=green!50!black,->] (O) -- (0,0,1);
+  \node[anchor=east, color=green!50!black, tdplot_screen_coords] (Fb) at (-0.3, 0, 0) {$\cF_b \;$};
+  
+  \tdplotsetrotatedcoords{-30}{-10}{0};
+  \draw[thick, color=blue, tdplot_rotated_coords,->] (0,0,0) -- (1,0,0);
+  \draw[thick, color=blue, tdplot_rotated_coords,->] (0,0,0) -- (0,1,0);
+  \draw[thick, color=blue, tdplot_rotated_coords,->] (0,0,0) -- (0,0,1);
+  \node[anchor=east, color=blue, tdplot_screen_coords] (Fc) at (-0.3, -0.75) {$\cF_c \;$};
+  \draw[-stealth, tdplot_rotated_coords, color=blue] (0,0,0) -- (P)  node [near end, above] {$\vecx^c$};
+  \path (P) node[circle, fill, inner sep=1]{};
+  \node[anchor=west] at (P) {$X$};
+  
+  \tdplotsetrotatedcoords{30}{10}{10};
+  \draw[thick, color=red, tdplot_rotated_coords,->] (0,0,0) -- (1,0,0);
+  \draw[thick, color=red, tdplot_rotated_coords,->] (0,0,0) -- (0,1,0);
+  \draw[thick, color=red, tdplot_rotated_coords,->] (0,0,0) -- (0,0,1);
+  \node[anchor=east, color=red, tdplot_screen_coords] (Fa) at (-0.3, 0.75) {$\cF_a \;$};
+  
+  \draw[-stealth, densely dotted] (Fb)  to [bend left=60]  node [midway, left] {$\matR_{ba}$} (Fa);
+  \draw[-stealth, densely dotted] (Fb)  to [bend right=60]  node [midway, left] {$\matR_{bc}$} (Fc);
+  
+  
+\end{tikzpicture}

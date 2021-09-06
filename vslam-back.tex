@@ -1,0 +1,94 @@
+\chapter{Visual SLAM back ends}
+Two different research fields in particular have been involved in studying methods for estimating motion and scene structure simultaneously using cameras, which is a difficult and highly nonlinear problem.
+The SLAM field within robotics have traditionally been using sequential filtering methods \cite{Thrun2002ProbabilisticRobotics} to estimate the real-time motion of robots and the position of landmarks, often in combination with other sensors.
+Traditional nonlinear filtering methods, such as the EKF\footnote{Extended Kalman Filter}, achieve fast estimation time by updating just based on the current states, since previous states are marginalised out when new states are added.
+These methods also choose linearisation points for new states at the current time, and maintain these linearisations throughout the estimation.
+This will cause linearisation errors that accumulate over time, causing the solution to drift and the filter to become inconsistent.
+
+The structure from motion (SFM) field in computer vision has evolved from photogrammetry, and has traditionally focused their work on offline 3D reconstruction of the environment based on batch optimisation through \textit{bundle adjustment} \cite{Triggs2000BundleSynthesis}.
+Smoothing approaches such as this are generally more accurate than filtering, since they are able to relinearise past measurements.
+In addition, by keeping past states it is easy to add measurements with high latency and to perform loop closures when areas are revisited.
+The last 10 years or so has seen the bridging of the gap between these two fields, where the de-facto standard now is to formulate the mapping problem as a batch MAP estimation problem\cite{Strasdat2012VisualFilter, Cadena2016}, typically based on \textit{factor graphs}.
+
+A factor graph represents the estimation problem as a graphical model, and provides powerful tools for expressing and solving nonlinear estimation problems \cite{Dellaert2017}.
+It is a bipartite graph $F = (\mathcal{U}, \mathcal{V}, \mathcal{E})$, with two node types: \textit{factors} $\phi_i \in \mathcal{U}$ and \textit{variables} $x_j \in \mathcal{V}$.
+Edges $e_{ij} \in \mathcal{E}$ are always between factor nodes and variable nodes.
+The set of nodes adjacent to a factor $\phi_i$ is written as $\mathcal{N}(\phi_i)$, and we write $X_i$ for an assignment to this set.
+A factor graph $F$ then defines the factorisation of a function $\phi(X)$ as
+\begin{equation}
+    \phi(X) = \prod_i{\phi_i(X_i)}. \label{eqn:factor}
+\end{equation}
+Independence relationships are encoded by the edges $e_{ij}$ of the factor graph, with each factor $\phi_i$ a function of \textit{only} the variables $X_i$ in its adjacency set $\mathcal{N}(\phi_j)$.
+
+We can represent the posterior in \eqref{eqn:MAP} with a factor graph by letting $\phi(X) \propto p(X|Z)$. 
+Since
+\begin{equation}
+    p(X|Z) \propto l(X;Z)p(X) = \prod_i l(X_i;Z_i) \prod_j p(x_j),
+\end{equation}
+each factor $\phi_i$ will then correspond to either prior densities $p(x_j)$ or likelihood functions $l(X_i;Z_i)$ from the factored unnormalised posterior. MAP inference then simply comes down to maximising the product (\ref{eqn:factor}) of all factor graph potentials:
+\begin{align}
+    X^{MAP} &= \argmax_X \phi(X)\\
+            &= \argmax_X \prod_i \phi_i(X_i). \label{eqn:MAP_factors}
+\end{align}
+The measurements and priors can be modelled with a generative probabilistic model
+\begin{equation}
+    \hat{z}_i = h_i(X_i) + \eta_i,
+\end{equation}
+where $h_i(X_i)$ is the \textit{measurement prediction function} and $\eta_i$ is additive measurement noise.
+If we assume Gaussian priors and likelihood functions derived from measurements corrupted by zero-mean normally distributed noise, all factors in (\ref{eqn:MAP_factors}) are of the form
+\begin{equation}
+    \phi_i(X_i) \propto \exp \left \{ - \frac{1}{2} \norm{h_i(X_i) - z_i}_{\Sigma_i}^2 \right \},
+\end{equation}
+where
+\begin{equation}
+    \norm{e}_{\Sigma}^{2} \triangleq e^T \Sigma^{-1} e
+\end{equation}
+denotes the squared Mahalanobis distance over the \textit{residual errors}.
+
+By taking the negative log of (\ref{eqn:MAP_factors}) and dropping the constant factor, we can instead minimise a sum of nonlinear least-squares:
+\begin{equation}
+    X^{MAP} = \argmin_x \sum_i \norm{h_i(X_i) - z_i}_{\Sigma_i}^2. \label{eqn:nonlinear_ls}
+\end{equation}
+MAP inference in this situation is therefore equivalent to solving a nonlinear least-squares problem,
+and can be efficiently computed using iterative nonlinear optimisation methods such as Gauss-Newton or Levenberg-Marquardt, given a good initial estimate $X^0_i$ and the \textit{measurement Jacobian}
+\begin{equation}
+    H_i \triangleq \frac{\partial h_i(X_i)}{\partial X_i}.
+\end{equation}
+
+In visual SLAM, the variables $X$ are often 3D camera poses and landmark positions.
+The factors between the pose variables and the landmark variables encode the errors in the predicted landmark projections for each camera using the current hypothesis $X^k$, compared to the actual measurements $Z$.
+The prior factors on camera poses and landmark positions encode the errors in the assumed state compared to the hypothesis.
+Given an appropriate motion model, for example, factors between camera poses can also be defined.
+In fact, by defining appropriate measurement prediction functions and Jacobians, any additional constraints between variables based on measurements from other sources, such as IMUs, GNSS, barometers and lidars \cite{Chiu2014}, can also be included in the optimisation as new factors.
+Additional variables such as calibration parameters can similarly be included by extending the measurement models.
+This is what makes the factor graph framework a powerful tool for VSLAM and data fusion in general.
+
+This project will use factor graphs as the primary framework for fusing sensor data, prior information and other possible data sources in the mapping back end. 
+Implementations \cite{Kummerle2011G2o:Optimization, KuemmerleG2oSource, Dellaert2012FactorIntroduction, Dellaert2018GTSAMSource} provide \textit{full batch} solvers based on sparse linear algebra, that can be used in real time in the PTAM architecture.
+This can be combined with \textit{fixed-lag smoothers} \cite{Strasdat2011DoubleSLAM, Chiu2013}, that achieves constant estimation time by performing optimisation over a fixed window of states, while marginalising out the rest.
+There are also incremental solvers that efficiently update the solution given new data \cite{Kaess2012ISAM2:Tree}.
+Full (incremental) smoothing and (incremental) fixed-lag smoothing may also be combined in what is called \textit{concurrent smoothing and mapping} \cite{Kaess2012, Chiu2013}, and allows constant-time estimation with full batch optimisation over the same factor graph.
+Finally, there are also solvers that relax the assumption on Gaussian noise, and may perform full batch and incremental inference over non-parametric multimodal distributions \cite{Fourie2016, Fourie2017Multi-modalGraphs, incrementalinferencejl}. 
+This is especially interesting when data associations are uncertain, for example when you know you are close to a house, but not which of several possible houses in a given prior map.
+The multimodal factor graph framework makes it possible to perform inference over multiple hypotheses in this situation, enabling the back end to exploit more information than would otherwise be possible.
+
+
+% \section{Mapping with factor graphs}
+% \begin{itemize}
+%     \item State estimation
+%     \item Intro to factor graphs
+%     \item GTSAM
+% \end{itemize}
+
+
+% \section{Batch VSLAM strategies}
+
+% \section{Visual Odometry}
+
+
+% \section{Incremental SLAM with factor graphs}
+
+
+% \section{VSLAM and data fusion with other sensors}
+
+

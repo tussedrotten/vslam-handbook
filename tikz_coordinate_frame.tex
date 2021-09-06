@@ -1,0 +1,14 @@
+\tdplotsetmaincoords{60}{110}
+\begin{tikzpicture}[scale=2, tdplot_main_coords]
+  \coordinate (O) at (0,0,0);
+  \coordinate (P) at (0,4,2);
+  
+  \draw[thick, color=red, ->] (O) -- (1,0,0);
+  \draw[thick, color=red, ->] (O) -- (0,1,0);
+  \draw[thick, color=red, ->] (O) -- (0,0,1);
+  \node[anchor=north, color=red] (Fa) at (0,0.1,-0.1) {$\cF_a \;$};
+  
+  \path (P) node[circle, fill, inner sep=1]{};
+  \draw[-stealth, color=red] (O) -- (P)  node [midway, above] {$\vecx^a$};
+  \node[anchor=west] at (P) {$X$};
+\end{tikzpicture}

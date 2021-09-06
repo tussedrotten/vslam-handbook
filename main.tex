@@ -1,0 +1,65 @@
+\documentclass[12pt]{report}
+\usepackage[utf8]{inputenc}
+
+\title{A handbook in Visual SLAM}
+\author{Trym Vegard Haavardsholm}
+
+\date{Draft\\Updated 16.03.2021}
+
+\usepackage{import}
+\usepackage{biblatex}
+\addbibresource{references.bib}
+\usepackage{graphicx}
+\usepackage[export]{adjustbox}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{longtable}
+\usepackage{makecell}
+\renewcommand{\cellalign}{l}
+\renewcommand\theadalign{l}
+\renewcommand\theadfont{\bfseries}
+\renewcommand\theadgape{\Gape[4pt]}
+\renewcommand\cellgape{\Gape[4pt]}
+\usepackage[caption=false,font=footnotesize]{subfig}
+\usepackage[a4paper,top=3cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+\usepackage{todonotes}
+\usepackage{tikz}
+\usepackage{tikz-3dplot}
+\usepackage{caption}
+\usepackage{mathtools}
+\usepackage[ruled]{algorithm2e}\usepackage{accents}
+
+% Custom packages
+\usepackage{custom_commands}
+\usepackage{example_setup}
+
+\usepackage{hyperref}
+
+\setcounter{tocdepth}{1}
+
+\setlength{\parskip}{1em}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+\listofexamples
+
+\import{./}{introduction.tex}
+%\import{./}{image-formation.tex}
+\import{./}{3d_geometry.tex}
+\import{./}{camera-geometry.tex}
+\import{./}{lie-theory.tex}
+\import{./}{jacobians.tex}
+\import{./}{uncertainty.tex}
+\import{./}{nonlinear-ls.tex}
+\import{./}{pose-and-structure-estimation.tex}
+%\import{./}{vslam-intro.tex}
+% \import{./}{vslam-front.tex}
+% \import{./}{vslam-back.tex}
+
+
+\printbibliography[heading=bibintoc, title={Bibliography}]
+
+\end{document}

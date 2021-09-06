@@ -1,0 +1,19 @@
+\tdplotsetmaincoords{60}{110}
+\begin{tikzpicture}[scale=2, tdplot_main_coords]
+  \coordinate (O) at (0,0,0);
+  
+  \draw[thick, color=red,->] (O) -- (1,0,0) node[anchor=north east]{$\veca_1$};
+  \draw[thick, color=red,->] (O) -- (0,1,0) node[anchor=south west]{$\veca_2$};
+  \draw[thick, color=red,->] (O) -- (0,0,1) node[anchor=south east]{$\veca_3$};
+  \node[anchor=east, color=red] (Fa) at (O) {$\cF_a \;$};
+  
+  \tdplotsetrotatedcoords{45}{20}{20};
+  
+  \draw[thick, color=green!50!black, tdplot_rotated_coords,->] (0,0,0) -- (1,0,0) node[anchor=north]{$\vecb_1$};
+  \draw[thick, color=green!50!black, tdplot_rotated_coords,->] (0,0,0) -- (0,1,0) node[anchor=west]{$\vecb_2$};
+  \draw[thick, color=green!50!black, tdplot_rotated_coords,->] (0,0,0) -- (0,0,1) node[anchor=south west]{$\vecb_3$};
+  \node[anchor=north, color=green!50!black] (Fb) at (0.2,0.2,0) {$\cF_b \;$};
+  
+  \draw[-stealth, densely dotted] (Fa)  to [bend right=60]  node [near start, left] {$\matR_{ab}$} (Fb);
+  
+\end{tikzpicture}

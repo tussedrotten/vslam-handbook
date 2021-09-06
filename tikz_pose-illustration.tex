@@ -1,0 +1,22 @@
+\tdplotsetmaincoords{60}{110}
+\begin{tikzpicture}[scale=2, tdplot_main_coords]
+  \coordinate (O) at (0,0,0);
+  
+  \draw[thick, color=red, ->] (O) -- (1,0,0);
+  \draw[thick, color=red, ->] (O) -- (0,1,0);
+  \draw[thick, color=red, ->] (O) -- (0,0,1);
+  \node[anchor=north, color=red] (Fa) at (0,0.1,-0.1) {$\cF_a \;$};
+  
+  \coordinate (W) at (3, 3, 1);
+  \tdplotsetrotatedcoords{30}{0}{0};
+  \tdplotsetrotatedcoordsorigin{(W)};
+  
+  \draw[thick, color=green!50!black, tdplot_rotated_coords,->] (0,0,0) -- (1,0,0);
+  \draw[thick, color=green!50!black, tdplot_rotated_coords,->] (0,0,0) -- (0,1,0);
+  \draw[thick, color=green!50!black, tdplot_rotated_coords,->] (0,0,0) -- (0,0,1);
+  \node[anchor=north east, color=green!50!black, tdplot_rotated_coords] (Fb) at (0,0,0) {$\cF_b \;$};
+  
+  \draw[-stealth, densely dotted] (Fa)  to [bend right=60]  node [midway, below] {$\matR_{ab}$} (Fb);
+  \draw[-stealth, color=red] (O) -- (W)  node [near end, above] {$\vect^a_{ab}$};
+  
+\end{tikzpicture}

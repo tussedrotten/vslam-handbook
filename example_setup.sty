@@ -1,0 +1,60 @@
+% EXAMPLES
+% Inspired by 
+%  https://tex.stackexchange.com/questions/262915/how-to-create-a-list-for-mdframed-example-boxs
+%  https://tex.stackexchange.com/questions/38354/make-an-example-and-shaded-box-like-in-the-book
+
+%% set the counter for your environment
+\usepackage{tocbasic}
+\usepackage[framemethod=TikZ]{mdframed}
+
+\newcounter{example}
+\renewcommand{\theexample}{\thechapter.\arabic{example}}
+
+%% define the style
+\mdfdefinestyle{example}{%
+backgroundcolor=black!10,
+    linecolor=black,
+    outerlinewidth=1pt,
+    topline=true, bottomline=false,
+    leftline=false,rightline=false,
+    skipabove=\baselineskip,
+    skipbelow=\baselineskip,
+    frametitle=\mbox{},
+    settings={\global\refstepcounter{example}},
+}
+%% setup the environments
+\makeatletter
+   %%% with number
+   \newmdenv[%
+       style=example,
+       settings={%
+          \global\refstepcounter{example}
+          \addxcontentsline{loe}{example}[\theexample]{\mdf@frametitle}
+       },
+       frametitlefont={\bfseries Example~\theexample\quad},
+   ]{example}
+   %%% without number (starred version)
+   \newmdenv[%
+       style=example,
+%% uncomment the following three lines to get unnumberd examples in the list
+%       settings={%
+%          \addxcontentsline{loe}{example}{\mdf@frametitle}
+%       },
+       frametitlefont={\bfseries Example~\quad},
+   ]{example*}
+\makeatother
+
+% LIST: loe = list of examples
+% requieres tocbasic.sty which is loaded by scrreprt
+%% setup new TOC
+\addtotoclist{loe}
+%% set command for headline
+\newcommand{\listofloename}{List of Examples}
+%% set up diplay in list like for figures
+\makeatletter
+   \newcommand{\l@example}{\l@figure}
+\makeatother
+%% decalere new TOC
+\setuptoc{loe}{chapteratlist}
+%% own command to print list
+\newcommand{\listofexamples}{\listoftoc{loe}}
