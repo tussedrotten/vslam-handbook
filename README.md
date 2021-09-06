@@ -1,5 +1,6 @@
 # vslam-handbook
 [![Latest Release](https://img.shields.io/github/release/tussedrotten/vslam-handbook.svg?label=Download)](https://github.com/tussedrotten/vslam-handbook/releases/)
+[![Discussions](https://img.shields.io/github/discussions/tussedrotten/vslam-handbook?label=Discussions)](https://github.com/tussedrotten/vslam-handbook/discussions/)
 [![CC BY-NC-SA 4.0][cc-by-nc-sa-shield]][cc-by-nc-sa]
 
 A collection of topics and examples that I find useful in the study and teaching of Visual SLAM.
