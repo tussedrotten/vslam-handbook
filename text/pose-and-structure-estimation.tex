@@ -24,7 +24,7 @@ But as pointed out in \cite{Engel2014LSD-SLAM:SLAM}, an interesting paradox is t
 Adding more sensors, such as another camera with known baseline, active range sensors or an inertial navigation system, can enable us to recover metric scale, as well as the horizontal plane, and even the geographical pose.
 
 \section{Problem formulations}
-It is common to formulate pose estimation problems as either \emph{direct} or \emph{indirect}, and structure estimation problems as either \emph{dense} or \emph{sparse} \cite{Engel2017DirectOdometry}.
+It is common to formulate pose estimation problems as either \emph{direct} or \emph{indirect}, and structure estimation problems as either \emph{dense} or \emph{sparse} \cite{Engel2018}.
 
 \emph{Indirect methods} first extract an intermediate geometrical representation of the scene, such as keypoint correspondences or optical flow vectors, and use these to optimise a \emph{geometric error}.
 Because these methods are based on some kind of feature extraction step, they are also often called \emph{feature-based methods}.
@@ -39,7 +39,7 @@ An important difference between the sparse and dense methods is that, while the 
 Because of the resulting correlated structure in the dense maps, it is difficult to optimise pose and dense structure jointly in real-time.
 
 The most widely used formulation is the sparse indirect formulation, which is used in methods such as PTAM \cite{Klein2007ParallelWorkspaces} and ORB-SLAM \cite{Mur-Artal2015ORB-SLAM:System}.
-The sparse direct formulation is used in DSO \cite{Engel2017DirectOdometry}, while the dense direct formulation is used in DTAM \cite{Newcombe2011DTAM:Real-time} and LSD-SLAM \cite{Engel2014LSD-SLAM:SLAM}.
+The sparse direct formulation is used in DSO \cite{Engel2018}, while the dense direct formulation is used in DTAM \cite{Newcombe2011DTAM:Real-time} and LSD-SLAM \cite{Engel2014LSD-SLAM:SLAM}.
 SVO \cite{Forster2014SVO:Odometry} uses a hybrid formulation, where the direct formulation is used for initial alignment and to obtain correspondences, while the indirect formulation is used for joint model optimisation.
 
 We will in the following sections take a closer look at how we can express and solve some of these problems.
