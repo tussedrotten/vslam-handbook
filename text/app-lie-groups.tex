@@ -1,0 +1,400 @@
+\chapter{Useful Lie groups} \label{ch:useful-lie-groups}
+
+\section{The 2D rotation group \SO(2)} \label{sec:SO2_group}
+Coming, see \cite{SolaARobotics}.
+
+\section{The 3D rotation group \SO(3)} \label{sec:SO3_group}
+The \emph{special orthogonal group} in 3D is the set of valid rotation matrices
+\begin{equation}
+  \SO(3) = \left \{ \matR \in \bbR^{3 \times 3} \;\middle|\; \matR\matR\trans = \matI, \det \matR = 1 \right \},
+\end{equation}
+and is closed under matrix multiplication with identity $\matI$.
+Inversion is achieved with transposition
+\begin{equation}
+  \matR^{-1} = \matR\trans,
+\end{equation}
+and composition with the product
+\begin{equation}
+  \matR_a \circ \matR_b = \matR_a \matR_b.
+\end{equation}
+The group action on vectors is given by the product
+\begin{equation} \label{eq:SO3-group-action}
+  \matR \cdot \vecx = \matR \vecx.
+\end{equation}
+
+\subsection{Lie algebra}
+The Lie algebra of $\SO(3)$ is given by
+\begin{equation}
+  \so(3) = \left \{ \vectheta^\wedge = [\vectheta]_\times \in \bbR^{3 \times 3} \;\middle|\; \vectheta \in \bbR^3 \right \},
+\end{equation}
+where the tangent space vector $\vectheta \triangleq \theta \vecu$ corresponds to the rotation on angle-axis form, with angle $\theta$ and unit rotation axis $\vecu$ (see Section~\ref{sec:orientation}).
+Since $\vectheta \in \bbR^3$, the dimension of $\SO(3)$ is $m = 3$.
+
+The Lie algebra is a vector space that can be decomposed into
+\begin{equation}
+  \vectheta^\wedge = [\vectheta]_\times = \theta_1 \matE_1 + \theta_2 \matE_2 + \theta_3 \matE_3,
+\end{equation}
+where
+\begin{equation}
+  \matE_1 =
+  \begin{bsmallmatrix}
+    0 & 0 & 0\\
+    0 & 0 & -1\\
+    0 & 1 & 0
+  \end{bsmallmatrix}, \;
+  \matE_2 =
+  \begin{bsmallmatrix}
+    0 & 0 & 1\\
+    0 & 0 & 0\\
+    -1 & 0 & 0
+  \end{bsmallmatrix}, \;
+  \matE_3 =
+  \begin{bsmallmatrix}
+    0 & -1 & 0\\
+    1 & 0 & 0\\
+    0 & 0 & 0
+  \end{bsmallmatrix},
+\end{equation}
+are the generators of $\so(3)$. The hat and vee operators are given by
+\begin{align}
+\begin{alignedat}{2}
+  \text{Hat} \; &: \quad \vectheta^\wedge &&= [\vectheta]_\times\\
+  \text{Vee} \; &: \quad \vectheta &&= [\vectheta]^\vee_\times.
+\end{alignedat}
+\end{align}
+
+\subsection{Exp and Log maps} \label{sec:Exp-Log-SO3}
+Since the tangent space vector $\vectheta = \theta \vecu$ corresponds to the axis-angle representation, the $\Exp$ map is simply the Rodrigues' rotation formula
+\begin{equation} \label{eq:Exp-SO3}
+  \matR = \Exp(\vectheta) \triangleq \matI + \sin \theta [\vecu]_\times + (1 - \cos \theta) [\vecu]^2_\times.
+\end{equation}
+
+The $\Log$ map is given by
+\begin{equation} \label{eq:Log-SO3}
+  \vectheta = \Log(\matR) \triangleq \frac{\theta}{2 \sin \theta} (\matR - \matR\trans)^\vee,
+\end{equation}
+where
+\begin{equation}
+  \theta = \arccos \left( \frac{\tr(\matR) - 1}{2} \right).
+\end{equation}
+
+Special care must be taken when $\theta$ is small.
+Practical implementations can in these cases use a Taylor expansion of the coefficient $\theta / (2 \sin \theta)$ \cite{Eade2013LieTransformations}.
+Also, when $\theta$ is small, the following approximation holds (see \eqref{eq:infinitesimal-rotaton}):
+\begin{equation} \label{eq:SO3-Exp-approx}
+  \matR = \Exp(\vectheta) \approx \matI + \vectheta^\wedge.
+\end{equation}
+
+\subsection{The adjoint}
+The adjoint matrix for $\SO(3)$ at $\matR$ is given by
+\begin{equation}
+  \mAd_\matR = \matR  \in \bbR^{3 \times 3}.
+\end{equation}
+
+\subsection{Jacobian blocks for \SO(3)} \label{sec:Jacobians-SO3}
+The right and left Jacobians, and their inverses, have the following closed form expressions: 
+\begin{align}
+\jac{}{r}(\vectheta) &= \matI - \frac{1-\cos\theta}{\theta^2}\skewsymm{\vectheta} + \frac{\theta-\sin\theta}{\theta^3}\skewsymm{\vectheta}^2\\
+\jac{}{r}^{-1}(\vectheta) &= \matI + \frac{1}{2}\skewsymm{\vectheta} + \left(\frac{1}{\theta^2} - \frac{1+\cos\theta}{2\theta\sin\theta}\right)\skewsymm{\vectheta}^2 \\
+\jac{}{l}(\vectheta) &= \matI + \frac{1-\cos\theta}{\theta^2}\skewsymm{\vectheta} + \frac{\theta-\sin\theta}{\theta^3}\skewsymm{\vectheta}^2 \label{eq:SO3-left-jac}\\
+\jac{}{l}^{-1}(\vectheta) &= \matI - \frac{1}{2}\skewsymm{\vectheta} + \left(\frac{1}{\theta^2} - \frac{1+\cos\theta}{2\theta\sin\theta}\right)\skewsymm{\vectheta}^2.
+\end{align}
+Notice that
+\begin{equation}
+  \jac{}{l}(\vectheta) = \jac{}{r}(\vectheta)\trans, \quad\quad \jac{}{l}(\vectheta)^{-1} = \jac{}{r}(\vectheta)\invtrans.
+\end{equation}
+
+In the remainder of this section, we list the Jacobian blocks in Section~\ref{sec:elem-lie-blocks} developed for $\SO(3)$.
+
+\subsubsection*{Jacobian of the inverse operation}
+\begin{equation}
+  \jac{\matR^{-1}}{\matR} = -\mAd_\matR = -\matR.
+\end{equation}
+
+\subsubsection*{Jacobians of the composition operation}
+\begin{align}
+  \jac{\matR_a \matR_b}{\matR_a} &= {\mAd_{\matR_b}}^{-1} = \matR_b\trans\\
+  \jac{\matR_a \matR_b}{\matR_b} &= \matI.
+\end{align}
+
+\subsubsection*{Jacobians of the group action}
+From Example~\ref{ex:lie-group-action-jac-SO3-example} we have
+\begin{align}
+  \jac{\matR \cdot \vecx}{\matR} &= -\matR [\vecx]_\times\\
+  \jac{\matR \cdot \vecx}{\vecx} &= \matR.
+\end{align}
+
+\subsubsection*{Jacobians of the plus and minus operators}
+\begin{align}
+  \jac{\matR \oplus \vectheta}{\matR} &= {\mAd_{\Exp(\vectheta)}}^{-1} = \matR(\vectheta)\trans\\
+  \jac{\matR \oplus \vectheta}{\vectheta} &= \jac{}{r}(\vectheta).
+\end{align}
+For $\vectheta = \matR_b \ominus \matR_a$, we have
+\begin{align}
+  \jac{\matR_b \ominus \matR_a}{\matR_a} &= -\jac{}{l}^{-1}(\vectheta)\\
+  \jac{\matR_b \ominus \matR_a}{\matR_b} &= \jac{}{r}^{-1}(\vectheta).
+\end{align}
+
+\section{The 2D rigid motion group \SE(2)} \label{sec:SE2_group}
+Coming, see \cite{SolaARobotics}.
+
+\section{The 3D rigid motion group \SE(3)} \label{sec:SE3_group}
+The \emph{special Euclidean group} in 3D is the set of valid Euclidean transformation matrices
+\begin{equation}
+  \SE(3) = \left \{ \matT =
+  \begin{bmatrix}
+    \matR & \vect\\
+    \matr{0}\trans & 1
+  \end{bmatrix}
+  \in \bbR^{4 \times 4} \;\middle|\; \matR \in \SO(3), \vect \in \bbR^3 \right \},
+\end{equation}
+and is closed under matrix multiplication with identity $\matI$.
+Inversion is given by
+\begin{equation}
+  \matT^{-1} = 
+  \begin{bmatrix}
+    \matR\trans & -\matR\trans \vect\\
+    \matr{0}\trans & 1
+  \end{bmatrix},
+\end{equation}
+and composition with the product
+\begin{equation}
+  \matT_a \circ \matT_b = \matT_a \matT_b = 
+  \begin{bmatrix}
+    \matR_a \matR_b & \matR_a \vect_b + \vect_a\\
+    \matr{0}\trans & 1
+  \end{bmatrix}.
+\end{equation}
+The group action on vectors is given by
+\begin{equation} \label{eq:SE3-group-action}
+  \matT \cdot \vecx = \matT \tilde{\vecx} = \matR \vecx + \vect.
+\end{equation}
+
+
+\subsection{Lie algebra}
+The Lie algebra of $\SE(3)$ is given by
+\begin{equation}
+  \se(3) = \left \{ \vecxi^\wedge = 
+  \begin{bmatrix}
+    [\vectheta]_\times & \vecrho\\
+    \matr{0}\trans & 0
+  \end{bmatrix}
+  \in \bbR^{4 \times 4} \;\middle|\; \vecxi =
+  \begin{bmatrix}
+    \vecrho\\
+    \vectheta
+  \end{bmatrix}  
+  \in \bbR^6 \right \},
+\end{equation}
+Since $\vecxi \in \bbR^6$, the dimension of $\SE(3)$ is $m = 6$.
+The vectors $\vecrho, \vectheta \in \bbR^3$ correspond the translational and rotational parts, respectively.
+
+The Lie algebra is a vector space that can be decomposed into
+\begin{equation}
+  \vecxi^\wedge = \xi_1 \matE_1 + \xi_2 \matE_2 + \xi_3 \matE_3 + \xi_4 \matE_4 + \xi_5 \matE_5 + \xi_6 \matE_6,
+\end{equation}
+where
+\begin{equation}
+\begin{alignedat}{3}
+  &\matE_1 =
+  \begin{bsmallmatrix}
+    0 & 0 & 0 & 1\\
+    0 & 0 & 0 & 0\\
+    0 & 0 & 0 & 0\\
+    0 & 0 & 0 & 0
+  \end{bsmallmatrix}, \;
+  &&\matE_2 =
+  \begin{bsmallmatrix}
+    0 & 0 & 0 & 0\\
+    0 & 0 & 0 & 1\\
+    0 & 0 & 0 & 0\\
+    0 & 0 & 0 & 0
+  \end{bsmallmatrix}, \;
+  &&\matE_3 =
+  \begin{bsmallmatrix}
+    0 & 0 & 0 & 0\\
+    0 & 0 & 0 & 0\\
+    0 & 0 & 0 & 1\\
+    0 & 0 & 0 & 0
+  \end{bsmallmatrix},\\
+  &\matE_4 =
+  \begin{bsmallmatrix}
+    0 & 0 & 0 & 0\\
+    0 & 0 & -1 & 0\\
+    0 & 1 & 0 & 0\\
+    0 & 0 & 0 & 0
+  \end{bsmallmatrix}, \;
+  &&\matE_5 =
+  \begin{bsmallmatrix}
+    0 & 0 & 1 & 0\\
+    0 & 0 & 0 & 0\\
+    -1 & 0 & 0 & 0\\
+    0 & 0 & 0 & 0
+  \end{bsmallmatrix}, \;
+  &&\matE_6 =
+  \begin{bsmallmatrix}
+    0 & -1 & 0 & 0\\
+    1 & 0 & 0 & 0\\
+    0 & 0 & 0 & 0\\
+    0 & 0 & 0 & 0
+  \end{bsmallmatrix},
+\end{alignedat}
+\end{equation}
+are the generators of $\se(3)$. The hat and vee operators are given by
+\begin{align}
+\begin{alignedat}{2}
+  \text{Hat} \; &: \quad \vecxi^\wedge &&= 
+    \begin{bmatrix}
+    [\vectheta]_\times & \vecrho\\
+    \matr{0}\trans & 0
+  \end{bmatrix}\\
+  \text{Vee} \; &: \quad \vecxi &&=
+    \begin{bmatrix}
+    [\vectheta]_\times & \vecrho\\
+    \matr{0}\trans & 0
+  \end{bmatrix}^\vee.
+\end{alignedat}
+\end{align}
+
+\subsection{Exp and Log maps}
+The $\Exp$ map for $\SE(3)$ is given by
+\begin{equation} \label{eq:SE3-exp}
+  \matT = \Exp(\vecxi) \triangleq 
+  \begin{bmatrix}
+    \Exp(\vectheta) & \matV(\vectheta) \vecrho\\
+    \matr{0}\trans & 1
+  \end{bmatrix},  
+\end{equation}
+where $\Exp(\vectheta)$ is given by \eqref{eq:Exp-SO3} and 
+\begin{equation}
+  \matV(\vectheta) = \matI + \frac{1 - \cos \theta}{\theta}[\vecu]_\times + \frac{\theta - \sin \theta}{\theta} [\vecu]^2_\times.
+\end{equation}
+
+The $\Log$ map is given by
+\begin{equation}
+  \vecxi = \Log(\matT) \triangleq 
+  \begin{bmatrix}
+    \matV^{-1}(\vectheta) \vect\\
+    \vectheta
+  \end{bmatrix},
+\end{equation}
+where $\vectheta = \Log(\matR)$ from \eqref{eq:Log-SO3} and
+\begin{equation}
+  \matV^{-1}(\vectheta) = \matI - \frac{\theta}{2}[\vecu]_\times + \left(1 - \frac{\theta \sin \theta}{2(1 - \cos \theta)} \right)[\vecu]^2_\times.
+\end{equation}
+
+As for $\SO(3)$ in Section~\ref{sec:Exp-Log-SO3}, special care must be taken when $\theta$ is small \cite{Eade2013LieTransformations}.
+Also, when $\theta$ is small, the following approximation holds:
+\begin{equation} \label{eq:SE3-Exp-approx}
+  \matT = \Exp(\vecxi) \approx \matI + \vecxi^\wedge.
+\end{equation}
+
+\subsection{The adjoint}
+The adjoint matrix for $\SE(3)$ at $\matT$ is given by
+\begin{equation}
+  \mAd_\matT = 
+  \begin{bmatrix}
+    \matR & [\vect]_\times \matR\\
+    \matr{0} & \matR
+  \end{bmatrix} \in \bbR^{6 \times 6}.
+\end{equation}
+
+\subsection{Hybrid representation} \label{sec:hybrid-representation}
+An alternative to representing poses on the $\SE(3)$ manifold, is to represent the orientation $\matR \in \SO(3)$ and position $\vect \in \bbR^3$ as two separate states without interaction.
+Since $\vect$ is a vector, we will in this case only need to compute the $\Exp$ and $\Log$ maps for the orientation on the $\SO(3)$ manifold.
+
+We can define maps the corresponding to $\Exp$ and $\Log$ for the hybrid representation as the pseudo-Exp and pseudo-Log maps \cite{BlancoAOptimization}:
+\begin{align}
+    \matT &= \text{pseudo-Exp}(\vecxi) \triangleq 
+    \begin{bmatrix}
+      \Exp(\vectheta) & \vecrho\\
+      \matr{0}\trans & 1
+  \end{bmatrix} \label{eq:SE3-pseudo-exp}\\ 
+  \vecxi &= \text{pseudo-Log}(\matT) \triangleq 
+  \begin{bmatrix}
+    \vect\\
+    \Log(\matR)
+  \end{bmatrix}.
+\end{align}
+
+A \emph{retraction} is a more general way to define a mapping between the tangent space $\cT\cM$ and the manifold $\cM$ \cite{Forster2017, Dellaert2017, Absil2008OptimizationManifolds}.
+For $\SE(3)$, the exponential map \eqref{eq:SE3-exp} is one example of retraction, while the pseudo-Exp \eqref{eq:SE3-pseudo-exp} is another, and sometimes more attractive choice.
+This is because the pseudo-versions saves computations both for the $\Exp$ and $\Log$ maps, as well for the Jacobians.
+
+\subsection{Jacobian blocks for \SE(3)} \label{sec:Jacobians-SE3}
+The left Jacobian and its inverse have the following closed form expressions: 
+\begin{align}
+\jac{}{l}(\vecxi) &= 
+\begin{bmatrix}
+  \jac{}{l}(\vectheta) & \matQ(\vecxi) \\
+  \matr{0} & \jac{}{l}(\vectheta)
+\end{bmatrix}\\
+\jac{}{l}^{-1}(\vecxi) &= 
+\begin{bmatrix}
+  \jac{}{l}^{-1}(\vectheta) & -\jac{}{l}^{-1}(\vectheta) \matQ(\vecxi) \jac{}{l}^{-1}(\vectheta) \\
+  \matr{0} & \jac{}{l}^{-1}(\vectheta)
+\end{bmatrix}.  \label{eq:jacobian-left-inverse-SE3}
+\end{align}
+Here $\jac{}{l}(\vectheta)$ is the left Jacobian of $\SO(3)$ in \eqref{eq:SO3-left-jac} and $\matQ(\vecxi)$ is given by
+%
+\newcommand{\rhox}{\skewsymm{\vecrho}}
+\newcommand{\thetax}{\skewsymm{\vectheta}}
+%
+\begin{equation}
+\begin{split}
+\matQ(\vecxi) =& 
+  \frac{1}{2}\rhox 
+  + \frac{\theta - \sin\theta}{\theta^3}(\thetax\rhox+\rhox\thetax+\thetax\rhox\thetax)\\
+  &- \frac{1 - \frac{\theta^2}{2} - \cos\theta}{\theta^4}(\thetax^2\rhox+\rhox\thetax^2-3\thetax\rhox\thetax)\\
+  &-\frac{1}{2}\left(\frac{1 -  \frac{\theta^2}{2} - \cos\theta}{\theta^4} 
+                  - 3\frac{\theta-\sin\theta-\frac{\theta^3}{6}}{\theta^5}\right)
+                  (\thetax\rhox\thetax^2 + \thetax^2\rhox\thetax).
+\end{split}
+\end{equation}
+%
+The right Jacobian and its inverse can be obtained using \eqref{eq:lie-right-jac-from-left}.
+
+In the remainder of this section, we list the Jacobian blocks in Section~\ref{sec:elem-lie-blocks} developed for $\SE(3)$.
+
+\subsubsection*{Jacobian of the inverse operation}
+\begin{equation}
+  \jac{\matT^{-1}}{\matT} = -\mAd_\matT = -
+  \begin{bmatrix}
+    \matR & \skewsymm{\vect}\matR\\
+    \matr{0} & \matR
+  \end{bmatrix}.
+\end{equation}
+
+\subsubsection*{Jacobians of the composition operation}
+\begin{align}
+  \jac{\matT_a \matT_b}{\matT_a} &= {\mAd_{\matT_b}}^{-1} = 
+  \begin{bmatrix}
+    \matR_b\trans & -\matR_b\trans \skewsymm{\vect_b}\\
+    \matr{0} & \matR_b\trans
+  \end{bmatrix}\\
+  \jac{\matT_a \matT_b}{\matT_b} &= \matI.
+\end{align}
+
+\subsubsection*{Jacobians of the group action}
+From Example~\ref{ex:lie-group-action-jac-SE3-example} we have
+\begin{align}
+  \jac{\matT \cdot \vecx}{\matT} &= 
+  \begin{bmatrix}
+    \matR & -\matR\skewsymm{\vecx}
+  \end{bmatrix}\\
+  \jac{\matT \cdot \vecx}{\vecx} &= \matR.
+\end{align}
+
+\subsubsection*{Jacobians of the plus and minus operators}
+\begin{align}
+  \jac{\matT \oplus \vecxi}{\matT} &= {\mAd_{\Exp(\vecxi)}}^{-1}\\
+  \jac{\matT \oplus \vecxi}{\vecxi} &= \jac{}{r}(\vecxi).
+\end{align}
+For $\vecxi = \matT_b \ominus \matT_a$, we have
+\begin{align}
+  \jac{\matT_b \ominus \matT_a}{\matT_a} &= -\jac{}{l}^{-1}(\vecxi)  \label{eq:jacobian-minus-x-SE3}\\
+  \jac{\matT_b \ominus \matT_a}{\matT_b} &= \jac{}{r}^{-1}(\vecxi).
+\end{align}
+
+\section{The translation group \texorpdfstring{$(\bbR^n, +)$}{}} \label{sec:translation_group}
+Coming, see \cite{SolaARobotics}.

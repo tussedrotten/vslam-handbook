@@ -1,8 +1,8 @@
 \chapter{Representing uncertainty} \label{ch:uncertainty}
-This chapter will cover how we can represent uncertainty in vectors and Lie group elements using Gaussian \emph{probability distribution functions (PDFs)}.
+This chapter will cover how we can represent uncertainty in vectors and Lie group elements in general using Gaussian \emph{probability distribution functions (PDFs)}.
 We will also see how we can propagate uncertainty through functions of random variables.
 This is a useful tool when we want to express uncertainty in different coordinate frames, or we want to propagate uncertainty through sensor models.
-Most of this chapter is based on \cite{barfoot2017state, SolaARobotics}.
+Most of this chapter is based on \cite{barfoot2017state, SolaARobotics, Mangelson2020CharacterizingAlgebra}.
 
 \section{The multivariate normal distribution}
 A \emph{multivariate normal} or \emph{Gaussian} PDF over the \emph{random variable} $\vecx \in \bbR^m$ can be expressed as
@@ -51,8 +51,11 @@ where the \emph{conditional distribution} of $\vecx$ given $\vecy$ is
 \begin{equation} \label{eq:gaussian-conditional}
   p(\vecx | \vecy) = \cN(\bar{\vecx} + \matSigma_{\vecx\vecy}\matSigma_{\vecy\vecy}^{-1}(\vecy - \bar{\vecy}),\; \matSigma_{\vecx\vecx} - \matSigma_{\vecx\vecy}\matSigma_{\vecy\vecy}^{-1}\matSigma_{\vecy\vecx}),
 \end{equation}
-and marginal distribution $p(\vecy)$ is given in \eqref{eq:marginal-py}.
-Given a measurement $\vecy$, we can use \eqref{eq:gaussian-conditional} to update the distribution of $\vecx$ given the measurement by adjusting $\bar{\vecx}$ and reducing the uncertainty in $\matSigma_{\vecx\vecx}$.
+and the marginal distribution $p(\vecy)$ is given in \eqref{eq:marginal-py}.
+The expression for the covariance of the conditional distribution, $\matSigma_{\vecx\vecx} - \matSigma_{\vecx\vecy}\matSigma_{\vecy\vecy}^{-1}\matSigma_{\vecy\vecx}$, is called the \emph{Schur complement} of $\matSigma_{\vecy\vecy}$.
+
+Given a measurement $\vecy$, we can use \eqref{eq:gaussian-conditional} to update the distribution of $\vecx$ given the measurement by adjusting $\bar{\vecx}$ and reducing the uncertainty in $\matSigma_{\vecx\vecx}$. 
+Or, equivalently, we can use the known joint distribution over state variables to represent all uncertainties relative to a given state.
 
 \section{Uncertainty for Lie groups}
 \begin{figure}[htb]
@@ -97,6 +100,7 @@ Using the framework presented above, we can draw random poses from a distributio
 }
 
 Figure~\ref{fig:draw-random-pose-example} shows the result of drawing 50 poses with $\bar{\matT} = \matI$ and
+
 \begin{equation*}
   \matSigma_\matT =
   \begin{bmatrix}
@@ -108,6 +112,37 @@ Figure~\ref{fig:draw-random-pose-example} shows the result of drawing 50 poses w
     & & & & & 0.2 \\
   \end{bmatrix}.
 \end{equation*}
+\end{example}
+
+It has been demonstrated that representing uncertainties on the manifold in this way captures the underlying distribution in stochastic kinematic models more accurately and more precisely, compared to representing uncertainties over position and orientation angles directly \cite{Long2012TheCoordinates}.
+
+\begin{example}[frametitle=The banana distribution is Gaussian]
+We will now demonstrate how a Gaussian PDF on the manifold lets us represent correlations between translation and orientation in a natural way with an experiment inspired from \cite{Long2012TheCoordinates}.
+
+Consider an uncertain movement in the plane from the starting pose shown in black in Figure~\ref{fig:banana-distribution-example}.
+Let the uncertain movement of 4 unit steps along the $x$-axis be represented by the stochastic 2D pose $\matT \in \SE(2)$, where $\matT \sim \cN(\bar{\matT}, \matSigma_\matT)$, and the uncertainty in translation along the $y$-axis and orientation are correlated:
+\begin{equation*}
+  \matSigma_\matT =
+  \begin{bmatrix}
+    0.1 & 0.0 & 0.0 \\
+    0.0 & 2.0 & 0.4 \\
+    0.0 & 0.4 & 0.1
+  \end{bmatrix}.
+\end{equation*}
+We can visualise this distribution by transforming ellipsoids corresponding to constant probabilities to the plane by using the exponential map.
+Figure~\ref{fig:banana-distribution-example} shows the probability contours corresponding to $75\%$ and $99\%$ in green, together with 100 randomly drawn poses from the same distribution.
+Notice the distinct banana shape of the distribution in the plane, and how it fits with the clear correlation between position and orientation in the random pose samples.
+
+{
+  \centering
+  \includegraphics[width=0.75\columnwidth]{figures/banana-distribution.png}
+  \captionsetup{type=figure}
+  \captionof{figure}{The starting pose is shown as a black arrow, and the distribution representing the uncertain movement is visualised as filled green contours corresponding to $75\%$ and $99\%$ probabilities.
+  100 pose samples drawn from the distribution are shown as green arrows.
+  }
+  \label{fig:banana-distribution-example}
+  \par
+}
 \end{example}
 
 \section{Propagation of uncertainty}
@@ -238,3 +273,37 @@ Using the Jacobian blocks from section \ref{sec:Jacobians-SE3}, we get the Jacob
 \end{align}
 which allows us to compute the approximation $\vecx^w \sim \cN(\bar{\vecx}^w, \matSigma_{\vecx^w})$.
 \end{example}
+
+\section{Propagating uncertainty with Lie operations}
+We will here (temporarily very briefly) present the main results from \cite{Mangelson2020CharacterizingAlgebra}, which lets us propagate uncertainty through important operations on Lie elements by also taking correlations into account.
+The original paper is based on left perturbations, so we will here present the corresponding results for right perturbations.
+See Appendix~\ref{ch:app-prop-lie-operations} for details.
+
+\subsection{The inverse operation}
+Given the distribution $\cX_{ij} \sim \cN(\bar{\cX}_{ij}, \matSigma_{\cX_{ij}})$, the corresponding distribution of the inverse element $\cX_{ji} = \cX_{ij}^{-1}$ is given by $\cX_{ji} \sim \cN(\bar{\cX}_{ji}, \matSigma_{\cX_{ji}})$, where these are exactly given as
+\begin{align}
+    \bar{\cX}_{ji} & = \bar{\cX}_{ij}^{-1}\\
+    \matSigma_{\cX_{ji}} &= \mAd_{\bar{\cX}_{ij}} \matSigma_{\cX_{ij}} \mAd_{\bar{\cX}_{ij}}\trans.
+\end{align}
+
+\subsection{The composition operation}
+Given the joint distribution over $[\cX_{ij}, \cX_{jk}]$, the distribution over the composition $\cX_{ik} = \cX_{ij} \circ \cX_{jk}$ is given to first order by
+\begin{align}
+    \bar{\cX}_{ik} &= \bar{\cX}_{ij} \circ \bar{\cX}_{jk}\\
+    \matSigma_{\cX_{ik}} &\approx 
+    \mAd_{\bar{\cX}_{jk}^{-1}} \matSigma_{\cX_{ij}} \mAd_{\bar{\cX}_{jk}^{-1}}\trans \nonumber\\
+    &+ \matSigma_{\cX_{jk}} \nonumber\\
+    &+ \mAd_{\bar{\cX}_{jk}^{-1}} \matSigma_{\cX_{ij}, \cX_{jk}}\\
+    &+ \matSigma_{\cX_{jk}, \cX_{ij}} \mAd_{\bar{\cX}_{jk}^{-1}}\trans \nonumber
+\end{align}
+
+\subsection{The relative composition}
+Given the joint distribution over $[\cX_{ij}, \cX_{ik}]$, the distribution over the relative composition $\cX_{jk} = \cX_{ij}^{-1} \circ \cX_{ik}$ is given to first order by
+\begin{align}
+  \bar{\cX}_{jk} &= \bar{\cX}_{ij}^{-1} \circ \bar{\cX}_{ik}\\
+  \matSigma_{\cX_{jk}} &\approx 
+  \mAd_{\bar{\cX}_{jk}^{-1}} \matSigma_{\cX_{ij}} \mAd_{\bar{\cX}_{jk}^{-1}}\trans \nonumber\\
+    &+ \matSigma_{\cX_{ik}} \nonumber\\
+    &- \mAd_{\bar{\cX}_{jk}^{-1}} \matSigma_{\cX_{ij}, \cX_{ik}}\\
+    &- \matSigma_{\cX_{ik}, \cX_{ij}} \mAd_{\bar{\cX}_{jk}^{-1}}\trans \nonumber
+\end{align}

@@ -1,0 +1,75 @@
+\chapter{Propagating uncertainty for Lie operations with right perturbations} \label{ch:app-prop-lie-operations}
+For now: Just very briefly showing the equations.
+
+\section{Inverse}
+\begin{equation}
+    \cX_{ij} = \bar{\cX}_{ij} \circ \Exp(\prescript{\cX_{ij}}{}{\vectau}), \quad \prescript{\cX_{ij}}{}{\vectau} \sim \cN(\matr{0}, \prescript{\cX_{ij}}{}{\matSigma_{\cX_{ij}}})
+\end{equation}
+
+\begin{equation}
+    \cX_{ji} = \cX^{-1}_{ij}
+\end{equation}
+
+\begin{subequations}
+\begin{align}
+    \bar{\cX}_{ji} \circ \Exp(\prescript{\cX_{ji}}{}{\vectau}) &= \left( \bar{\cX}_{ij} \circ \Exp(\prescript{\cX_{ij}}{}{\vectau}) \right)^{-1}\\
+    &= \Exp(-\prescript{\cX_{ij}}{}{\vectau}) \circ \bar{\cX}_{ij}^{-1}\\
+    &= \bar{\cX}_{ij}^{-1} \circ \Exp(- \mAd_{\bar{\cX}_{ij}} \prescript{\cX_{ij}}{}{\vectau})
+\end{align}
+\end{subequations}
+
+\begin{align}
+    \bar{\cX}_{ji} &= \bar{\cX}_{ij}^{-1}\\
+    \prescript{\cX_{ji}}{}{\vectau} &= - \mAd_{\bar{\cX}_{ij}} \prescript{\cX_{ij}}{}{\vectau}
+\end{align}
+
+\begin{equation}
+  \prescript{\cX_{ji}}{}{\matSigma}_{\cX_{ji}} = \mAd_{\bar{\cX}_{ij}} \prescript{\cX_{ij}}{}{\matSigma_{\cX_{ij}}} \mAd_{\bar{\cX}_{ij}}\trans.
+\end{equation}
+
+\section{Composition}
+
+\begin{subequations}
+\begin{align}
+    \bar{\cX}_{ik} \circ \Exp(\prescript{\cX_{ik}}{}{\vectau}) &= \bar{\cX}_{ij} \circ \Exp(\prescript{\cX_{ij}}{}{\vectau}) \circ \bar{\cX}_{jk} \circ \Exp(\prescript{\cX_{jk}}{}{\vectau})\\
+    &= \bar{\cX}_{ij} \circ \bar{\cX}_{jk} \circ \Exp(\mAd_{\bar{\cX}_{jk}^{-1}} \prescript{\cX_{ij}}{}{\vectau}) \circ \Exp(\prescript{\cX_{jk}}{}{\vectau})
+\end{align}
+\end{subequations}
+
+\begin{align}
+    \bar{\cX}_{ik} &= \bar{\cX}_{ij} \circ \bar{\cX}_{jk}\\
+    \Exp(\prescript{\cX_{ik}}{}{\vectau}) &= \Exp(\mAd_{\bar{\cX}_{jk}^{-1}} \prescript{\cX_{ij}}{}{\vectau}) \circ \Exp(\prescript{\cX_{jk}}{}{\vectau})\\
+    \prescript{\cX_{ik}}{}{\vectau} &\approx \mAd_{\bar{\cX}_{jk}^{-1}} \prescript{\cX_{ij}}{}{\vectau} + \prescript{\cX_{jk}}{}{\vectau}
+\end{align}
+
+\begin{align}
+  \prescript{\cX_{ik}}{}{\matSigma}_{\cX_{ik}} &\approx \mAd_{\bar{\cX}_{jk}^{-1}} \prescript{\cX_{ij}}{}{\matSigma_{\cX_{ij}}} \mAd_{\bar{\cX}_{jk}^{-1}}\trans\\
+    &+ \prescript{\cX_{jk}}{}{\matSigma_{\cX_{jk}}}\\
+    &+ \mAd_{\bar{\cX}_{jk}^{-1}} \prescript{\cX_{ij}, \cX_{jk}}{}{\matSigma_{\cX_{ij}, \cX_{jk}}}\\
+    &+ \prescript{\cX_{jk}, \cX_{ij}}{}{\matSigma_{\cX_{jk}, \cX_{ij}}} \mAd_{\bar{\cX}_{jk}^{-1}}\trans
+\end{align}
+
+\section{Relative pose}
+
+\begin{subequations}
+\begin{align}
+    \bar{\cX}_{jk} \circ \Exp(\prescript{\cX_{jk}}{}{\vectau}) &= \left( \bar{\cX}_{ij} \circ \Exp(\prescript{\cX_{ij}}{}{\vectau}) \right)^{-1} \circ \bar{\cX}_{ik} \circ \Exp(\prescript{\cX_{ik}}{}{\vectau})\\
+    &= \Exp(-\prescript{\cX_{ij}}{}{\vectau}) \circ \bar{\cX}_{ij}^{-1} \circ \bar{\cX}_{ik} \circ \Exp(\prescript{\cX_{ik}}{}{\vectau})\\
+    &= \bar{\cX}_{ij}^{-1} \circ \Exp(- \mAd_{\bar{\cX}_{ij}} \prescript{\cX_{ij}}{}{\vectau}) \circ \bar{\cX}_{ik} \circ \Exp(\prescript{\cX_{ik}}{}{\vectau})\\
+    &= \bar{\cX}_{ij}^{-1} \circ \bar{\cX}_{ik} \circ \Exp(- \mAd_{\bar{\cX}_{ik}^{-1}} \mAd_{\bar{\cX}_{ij}} \prescript{\cX_{ij}}{}{\vectau}) \circ \Exp(\prescript{\cX_{ik}}{}{\vectau})
+\end{align}
+\end{subequations}
+
+\begin{align}
+    \bar{\cX}_{jk} &= \bar{\cX}_{ij}^{-1} \circ \bar{\cX}_{ik}\\
+    \Exp(\prescript{\cX_{jk}}{}{\vectau}) &= \Exp(- \mAd_{\bar{\cX}_{ik}^{-1}} \mAd_{\bar{\cX}_{ij}} \prescript{\cX_{ij}}{}{\vectau}) \circ \Exp(\prescript{\cX_{ik}}{}{\vectau})\\
+    &= \Exp(- \mAd_{\bar{\cX}_{jk}^{-1}} \prescript{\cX_{ij}}{}{\vectau}) \circ \Exp(\prescript{\cX_{ik}}{}{\vectau})\\
+    \prescript{\cX_{jk}}{}{\vectau} &\approx - \mAd_{\bar{\cX}_{jk}^{-1}} \prescript{\cX_{ij}}{}{\vectau} + \prescript{\cX_{ik}}{}{\vectau}
+\end{align}
+
+\begin{align}
+  \prescript{\cX_{jk}}{}{\matSigma}_{\cX_{jk}} &\approx \mAd_{\bar{\cX}_{jk}^{-1}} \prescript{\cX_{ij}}{}{\matSigma_{\cX_{ij}}} \mAd_{\bar{\cX}_{jk}^{-1}}\trans\\
+    &+ \prescript{\cX_{ik}}{}{\matSigma_{\cX_{ik}}}\\
+    &- \mAd_{\bar{\cX}_{jk}^{-1}} \prescript{\cX_{ij}, \cX_{ik}}{}{\matSigma_{\cX_{ij}, \cX_{ik}}}\\
+    &- \prescript{\cX_{ik}, \cX_{ij}}{}{\matSigma_{\cX_{ik}, \cX_{ij}}} \mAd_{\bar{\cX}_{jk}^{-1}}\trans
+\end{align}
