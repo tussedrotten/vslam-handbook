@@ -1,10 +1,117 @@
 \chapter{Useful Lie groups} \label{ch:useful-lie-groups}
+This appendix contains summaries of some of the most used Lie groups, and is heavily based on the appendix in \cite{SolaARobotics}.
 
 \section{The 2D rotation group \SO(2)} \label{sec:SO2_group}
-Coming, see \cite{SolaARobotics}.
+The \emph{special orthogonal group} in 2D is the set of valid $2 \times 2$ rotation matrices
+\begin{equation}
+  \SO(2) = \left \{ \matR \in \bbR^{2 \times 2} \;\middle|\; \matR\matR\trans = \matI, \det \matR = 1 \right \},
+\end{equation}
+where $\matR$ is on the form
+\begin{equation}
+  \matR = 
+  \begin{bmatrix}
+    \cos \theta & -\sin \theta \\
+    \sin \theta & \cos \theta
+  \end{bmatrix}.
+\end{equation}
+The group is closed under matrix multiplication with identity $\matI$.
+Inversion is achieved with transposition
+\begin{equation}
+  \matR^{-1} = \matR\trans,
+\end{equation}
+and composition with the product
+\begin{equation}
+  \matR_a \circ \matR_b = \matR_a \matR_b.
+\end{equation}
+The group action on vectors $\vecx \in \bbR^2$ is given by the product
+\begin{equation} \label{eq:SO2-group-action}
+  \matR \cdot \vecx = \matR \vecx.
+\end{equation}
+
+\subsection{Lie algebra}
+The Lie algebra of $\SO(2)$ is given by
+\begin{equation}
+  \so(2) = \left \{ \theta^\wedge = [\theta]_\times \in \bbR^{2 \times 2} \;\middle|\; \theta \in \bbR \right \},
+\end{equation}
+where
+\begin{equation}
+  [\theta]_\times \triangleq
+  \begin{bmatrix}
+    0 & -\theta \\
+    \theta & 0
+  \end{bmatrix}.
+\end{equation}
+The tangent space vector $\theta$ corresponds to the rotation angle, and since $\theta \in \bbR$, the dimension of \SO(2) is $m = 1$.
+
+\subsection{Exp and Log maps} \label{sec:Exp-Log-SO2}
+The $\Exp$ and $\Log$ maps for $\SO(2)$ is given by
+\begin{align}
+  \matR &= \Exp(\theta) = 
+  \begin{bmatrix}
+    \cos \theta & -\sin \theta \\
+    \sin \theta & \cos \theta
+  \end{bmatrix}\\
+  \theta &= \Log(\matR) = \arctan(r_{21}, r_{11}).
+\end{align}
+Since
+\begin{align}
+  \matR(\theta)^{-1} &= \matR(-\theta)\\
+  \matR_a \circ \matR_b &= \matR_b \circ \matR_a,
+\end{align}
+planar rotations are commutative.
+It follows that
+\begin{align}
+  \Exp(\theta_a + \theta_b) &= \Exp(\theta_a) \circ \Exp(\theta_b)\\
+  \Log(\matR_a \circ \matR_b) &= \Log(\matR_a) + \Log(\matR_b)\\
+  \matR_b \ominus \matR_a &= \theta_b - \theta_a.
+\end{align}
+When $\theta$ is small, the following approximation holds:
+\begin{equation} \label{eq:SO2-Exp-approx}
+  \matR = \Exp(\theta) \approx \matI + \theta^\wedge.
+\end{equation}
+
+\subsection{The adjoint}
+The adjoint matrix for $\SO(2)$ at $\matR$ is given by
+\begin{equation}
+  \mAd_\matR = 1 \in \bbR.
+\end{equation}
+
+\subsection{Jacobian blocks} \label{sec:Jacobians-SO2}
+Most Jacobian blocks are scalar and trivial for $\SO(2)$.
+
+\subsubsection*{Left and right Jacobians}
+\begin{align}
+\jac{}{r}(\theta) &= \jac{}{l}(\theta) = 1\\
+\jac{}{r}^{-1}(\theta) &= \jac{}{l}^{-1}(\theta) = 1.
+\end{align}
+
+\subsubsection*{Jacobian of the inverse operation}
+\begin{equation}
+  \jac{\matR^{-1}}{\matR} = -1.
+\end{equation}
+
+\subsubsection*{Jacobians of the composition operation}
+\begin{equation}
+  \jac{\matR_a \matR_b}{\matR_a} = \jac{\matR_a \matR_b}{\matR_b} = 1.
+\end{equation}
+
+\subsubsection*{Jacobians of the plus and minus operators}
+\begin{equation}
+  \jac{\matR \oplus \theta}{\matR} = \jac{\matR \oplus \theta}{\theta} = 1.
+\end{equation}
+\begin{align}
+  \jac{\matR_b \ominus \matR_a}{\matR_a} &= -1\\
+  \jac{\matR_b \ominus \matR_a}{\matR_b} &= 1.
+\end{align}
+
+\subsubsection*{Jacobians of the group action}
+\begin{align}
+  \jac{\matR \cdot \vecx}{\matR} &= \matR [1]_\times \vecx\\
+  \jac{\matR \cdot \vecx}{\vecx} &= \matR.
+\end{align}
 
 \section{The 3D rotation group \SO(3)} \label{sec:SO3_group}
-The \emph{special orthogonal group} in 3D is the set of valid rotation matrices
+The \emph{special orthogonal group} in 3D is the set of valid $3 \times 3$ rotation matrices
 \begin{equation}
   \SO(3) = \left \{ \matR \in \bbR^{3 \times 3} \;\middle|\; \matR\matR\trans = \matI, \det \matR = 1 \right \},
 \end{equation}
@@ -17,7 +124,7 @@ and composition with the product
 \begin{equation}
   \matR_a \circ \matR_b = \matR_a \matR_b.
 \end{equation}
-The group action on vectors is given by the product
+The group action on vectors $\vecx \in \bbR^3$ is given by the product
 \begin{equation} \label{eq:SO3-group-action}
   \matR \cdot \vecx = \matR \vecx.
 \end{equation}
@@ -91,7 +198,7 @@ The adjoint matrix for $\SO(3)$ at $\matR$ is given by
   \mAd_\matR = \matR  \in \bbR^{3 \times 3}.
 \end{equation}
 
-\subsection{Jacobian blocks for \SO(3)} \label{sec:Jacobians-SO3}
+\subsection{Jacobian blocks} \label{sec:Jacobians-SO3}
 The right and left Jacobians, and their inverses, have the following closed form expressions: 
 \begin{align}
 \jac{}{r}(\vectheta) &= \matI - \frac{1-\cos\theta}{\theta^2}\skewsymm{\vectheta} + \frac{\theta-\sin\theta}{\theta^3}\skewsymm{\vectheta}^2\\
@@ -117,13 +224,6 @@ In the remainder of this section, we list the Jacobian blocks in Section~\ref{se
   \jac{\matR_a \matR_b}{\matR_b} &= \matI.
 \end{align}
 
-\subsubsection*{Jacobians of the group action}
-From Example~\ref{ex:lie-group-action-jac-SO3-example} we have
-\begin{align}
-  \jac{\matR \cdot \vecx}{\matR} &= -\matR [\vecx]_\times\\
-  \jac{\matR \cdot \vecx}{\vecx} &= \matR.
-\end{align}
-
 \subsubsection*{Jacobians of the plus and minus operators}
 \begin{align}
   \jac{\matR \oplus \vectheta}{\matR} &= {\mAd_{\Exp(\vectheta)}}^{-1} = \matR(\vectheta)\trans\\
@@ -133,6 +233,13 @@ For $\vectheta = \matR_b \ominus \matR_a$, we have
 \begin{align}
   \jac{\matR_b \ominus \matR_a}{\matR_a} &= -\jac{}{l}^{-1}(\vectheta)\\
   \jac{\matR_b \ominus \matR_a}{\matR_b} &= \jac{}{r}^{-1}(\vectheta).
+\end{align}
+
+\subsubsection*{Jacobians of the group action}
+From Example~\ref{ex:lie-group-action-jac-SO3-example} we have
+\begin{align}
+  \jac{\matR \cdot \vecx}{\matR} &= -\matR [\vecx]_\times\\
+  \jac{\matR \cdot \vecx}{\vecx} &= \matR.
 \end{align}
 
 \section{The 2D rigid motion group \SE(2)} \label{sec:SE2_group}
@@ -165,7 +272,7 @@ and composition with the product
     \matr{0}\trans & 1
   \end{bmatrix}.
 \end{equation}
-The group action on vectors is given by
+The group action on vectors $\vecx \in \bbR^3$ is given by
 \begin{equation} \label{eq:SE3-group-action}
   \matT \cdot \vecx = \matT \tilde{\vecx} = \matR \vecx + \vect.
 \end{equation}
@@ -321,7 +428,7 @@ A \emph{retraction} is a more general way to define a mapping between the tangen
 For $\SE(3)$, the exponential map \eqref{eq:SE3-exp} is one example of retraction, while the pseudo-Exp \eqref{eq:SE3-pseudo-exp} is another, and sometimes more attractive choice.
 This is because the pseudo-versions saves computations both for the $\Exp$ and $\Log$ maps, as well for the Jacobians.
 
-\subsection{Jacobian blocks for \SE(3)} \label{sec:Jacobians-SE3}
+\subsection{Jacobian blocks} \label{sec:Jacobians-SE3}
 The left Jacobian and its inverse have the following closed form expressions: 
 \begin{align}
 \jac{}{l}(\vecxi) &= 
@@ -375,16 +482,6 @@ In the remainder of this section, we list the Jacobian blocks in Section~\ref{se
   \jac{\matT_a \matT_b}{\matT_b} &= \matI.
 \end{align}
 
-\subsubsection*{Jacobians of the group action}
-From Example~\ref{ex:lie-group-action-jac-SE3-example} we have
-\begin{align}
-  \jac{\matT \cdot \vecx}{\matT} &= 
-  \begin{bmatrix}
-    \matR & -\matR\skewsymm{\vecx}
-  \end{bmatrix}\\
-  \jac{\matT \cdot \vecx}{\vecx} &= \matR.
-\end{align}
-
 \subsubsection*{Jacobians of the plus and minus operators}
 \begin{align}
   \jac{\matT \oplus \vecxi}{\matT} &= {\mAd_{\Exp(\vecxi)}}^{-1}\\
@@ -394,6 +491,16 @@ For $\vecxi = \matT_b \ominus \matT_a$, we have
 \begin{align}
   \jac{\matT_b \ominus \matT_a}{\matT_a} &= -\jac{}{l}^{-1}(\vecxi)  \label{eq:jacobian-minus-x-SE3}\\
   \jac{\matT_b \ominus \matT_a}{\matT_b} &= \jac{}{r}^{-1}(\vecxi).
+\end{align}
+
+\subsubsection*{Jacobians of the group action}
+From Example~\ref{ex:lie-group-action-jac-SE3-example} we have
+\begin{align}
+  \jac{\matT \cdot \vecx}{\matT} &= 
+  \begin{bmatrix}
+    \matR & -\matR\skewsymm{\vecx}
+  \end{bmatrix}\\
+  \jac{\matT \cdot \vecx}{\vecx} &= \matR.
 \end{align}
 
 \section{The translation group \texorpdfstring{$(\bbR^n, +)$}{}} \label{sec:translation_group}

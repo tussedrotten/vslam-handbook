@@ -119,16 +119,25 @@ It has been demonstrated that representing uncertainties on the manifold in this
 \begin{example}[frametitle=The banana distribution is Gaussian]
 We will now demonstrate how a Gaussian PDF on the manifold lets us represent correlations between translation and orientation in a natural way with an experiment inspired from \cite{Long2012TheCoordinates}.
 
-Consider an uncertain movement in the plane from the starting pose shown in black in Figure~\ref{fig:banana-distribution-example}.
-Let the uncertain movement of 4 unit steps along the $x$-axis be represented by the stochastic 2D pose $\matT \in \SE(2)$, where $\matT \sim \cN(\bar{\matT}, \matSigma_\matT)$, and the uncertainty in translation along the $y$-axis and orientation are correlated:
+Consider an uncertain motion in the plane from the starting pose shown in black in Figure~\ref{fig:banana-distribution-example}.
+Let the motion be represented by the stochastic 2D pose $\matT \in \SE(2)$, where $\matT \sim \cN(\bar{\matT}, \matSigma_\matT)$ with
 \begin{equation*}
+  \bar{\matT} =
+  \begin{bmatrix}
+    1 & 0 & 4 \\
+    0 & 1 & 0 \\
+    0 & 0 & 1
+  \end{bmatrix}
+  \qquad
   \matSigma_\matT =
   \begin{bmatrix}
     0.1 & 0.0 & 0.0 \\
     0.0 & 2.0 & 0.4 \\
     0.0 & 0.4 & 0.1
-  \end{bmatrix}.
+  \end{bmatrix},
 \end{equation*}
+which corresponds to an uncertain step of 4 units along the $x$-axis where the uncertainty in translation along the $y$-axis and orientation are highly correlated.
+
 We can visualise this distribution by transforming ellipsoids corresponding to constant probabilities to the plane by using the exponential map.
 Figure~\ref{fig:banana-distribution-example} shows the probability contours corresponding to $75\%$ and $99\%$ in green, together with 100 randomly drawn poses from the same distribution.
 Notice the distinct banana shape of the distribution in the plane, and how it fits with the clear correlation between position and orientation in the random pose samples.
@@ -279,15 +288,15 @@ We will here (temporarily very briefly) present the main results from \cite{Mang
 The original paper is based on left perturbations, so we will here present the corresponding results for right perturbations.
 See Appendix~\ref{ch:app-prop-lie-operations} for details.
 
-\subsection{The inverse operation}
-Given the distribution $\cX_{ij} \sim \cN(\bar{\cX}_{ij}, \matSigma_{\cX_{ij}})$, the corresponding distribution of the inverse element $\cX_{ji} = \cX_{ij}^{-1}$ is given by $\cX_{ji} \sim \cN(\bar{\cX}_{ji}, \matSigma_{\cX_{ji}})$, where these are exactly given as
+\subsection{The distribution of the inverse element}
+Given the distribution $\cX_{ij} \sim \cN(\bar{\cX}_{ij}, \matSigma_{\cX_{ij}})$, the corresponding distribution of the inverse element $\cX_{ji} = \cX_{ij}^{-1}$ is given by $\cX_{ji} \sim \cN(\bar{\cX}_{ji}, \matSigma_{\cX_{ji}})$, where the parameters are given exactly as
 \begin{align}
     \bar{\cX}_{ji} & = \bar{\cX}_{ij}^{-1}\\
     \matSigma_{\cX_{ji}} &= \mAd_{\bar{\cX}_{ij}} \matSigma_{\cX_{ij}} \mAd_{\bar{\cX}_{ij}}\trans.
 \end{align}
 
-\subsection{The composition operation}
-Given the joint distribution over $[\cX_{ij}, \cX_{jk}]$, the distribution over the composition $\cX_{ik} = \cX_{ij} \circ \cX_{jk}$ is given to first order by
+\subsection{The distribution of the composition}
+Given the joint distribution over $[\cX_{ij}, \cX_{jk}]$, the distribution over the composition $\cX_{ik} = \cX_{ij} \circ \cX_{jk}$ is given by $\cX_{ik} \sim \cN(\bar{\cX}_{ik}, \matSigma_{\cX_{ik}})$, where the parameters are given to first order as
 \begin{align}
     \bar{\cX}_{ik} &= \bar{\cX}_{ij} \circ \bar{\cX}_{jk}\\
     \matSigma_{\cX_{ik}} &\approx 
@@ -297,8 +306,8 @@ Given the joint distribution over $[\cX_{ij}, \cX_{jk}]$, the distribution over 
     &+ \matSigma_{\cX_{jk}, \cX_{ij}} \mAd_{\bar{\cX}_{jk}^{-1}}\trans \nonumber
 \end{align}
 
-\subsection{The relative composition}
-Given the joint distribution over $[\cX_{ij}, \cX_{ik}]$, the distribution over the relative composition $\cX_{jk} = \cX_{ij}^{-1} \circ \cX_{ik}$ is given to first order by
+\subsection{The distribution of the relative element}
+Given the joint distribution over $[\cX_{ij}, \cX_{ik}]$, the distribution over the relative element $\cX_{jk} = \cX_{ij}^{-1} \circ \cX_{ik}$ is given by $\cX_{jk} \sim \cN(\bar{\cX}_{jk}, \matSigma_{\cX_{jk}})$, where the parameters are given to first order as
 \begin{align}
   \bar{\cX}_{jk} &= \bar{\cX}_{ij}^{-1} \circ \bar{\cX}_{ik}\\
   \matSigma_{\cX_{jk}} &\approx 

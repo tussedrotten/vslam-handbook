@@ -163,8 +163,7 @@ Because of the structure of $\matK$, we preserve the normalised form of the homo
   \breve{\vecu} = \matK \breve{\vecx}_n.
 \end{equation}
 We can estimate a calibration matrix $\matK$ by performing a camera calibration procedure such as \cite{Zhang2000ACalibration}.
-It is common practice to reduce the number of parameters by dropping the skew factor.
-We will therefore from here on assume that $s_\theta=0$, which will simplify the following expressions somewhat.
+It is common practise to reduce the number of parameters by dropping the skew factor.
 
 When $\matK$ is known, we can obtain the \emph{calibrated} normalised image coordinates from the pixel $\vecu$ by applying the inverse transformation
 \begin{equation}
@@ -225,7 +224,7 @@ Putting it all together, the perspective camera model on homogeneous form gives 
 \begin{equation}
   \tilde{\vecu} = \matK \matPi_0 \tilde{\vecx}^c = \matK \vecx^c =
   \begin{bmatrix}
-    f_u & 0 & c_u\\
+    f_u & s_\theta & c_u\\
     0 & f_v & c_v\\
     0 & 0 & 1
   \end{bmatrix}
@@ -242,7 +241,7 @@ The equivalent projection function on Euclidean form is given by
   \matK \frac{1}{z^c} \vecx^c =
   \renewcommand\arraystretch{2}
   \begin{bmatrix}
-    f_u \dfrac{x^c}{z^c} + c_u\\
+    f_u \dfrac{x^c}{z^c} + s_\theta \dfrac{y^c}{z^c} + c_u\\
     f_v \dfrac{y^c}{z^c} + c_v \\
   \end{bmatrix}.
 \end{equation}
@@ -265,7 +264,7 @@ From \eqref{eq:normalised-normalised-coordinate} and \eqref{eq:normalised-from-p
   \vecx^c = \pi^{-1}_p(\vecu, z; \matK) = z \matK^{-1} \breve{\vecu} = z
   \renewcommand\arraystretch{2}
   \begin{bmatrix}
-    \dfrac{u - c_u}{f_u}\\
+    \dfrac{u - c_u}{f_u} - \dfrac{s_\theta}{f_u} \cdot \dfrac{v - c_v}{f_v}\\
     \dfrac{v - c_v}{f_v}\\
     1
   \end{bmatrix}.
@@ -449,7 +448,7 @@ We can restrict the search for correspondences by traversing along the epipolar 
 Given a set of putative point correspondences, we can test their validity by computing the distances to their corresponding epipolar lines.
 The distance $d(\tilde{\vecu}, \tilde{\vecl})$ between a homogeneous point $\tilde{\vecu}$ and a homogeneous line $\tilde{\vecl}$ is given by
 \begin{equation}
-  d(\tilde{\vecu}, \tilde{\vecl}) = \frac{\tilde{\vecu}\trans \tilde{\vecl}}{\sqrt{\tilde{l}_1 + \tilde{l}_2}}.
+  d(\tilde{\vecu}, \tilde{\vecl}) = \frac{\tilde{\vecu}\trans \tilde{\vecl}}{\sqrt{{\tilde{l}_1}^2 + {\tilde{l}_2}^2}}.
 \end{equation}
 Although it is a necessary requirement that $d(\tilde{\vecu}^a, \matF_{ab} \tilde{\vecu}^b)$ is small for $\tilde{\vecu}^a$ and $\tilde{\vecu}^b$ to be a valid point correspondence, it important to emphasise that this is not sufficient to guarantee its validity.
 It only suggests that the two points lie in the same epipolar plane.
