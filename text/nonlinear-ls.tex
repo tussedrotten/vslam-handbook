@@ -60,7 +60,7 @@ This lets us define a procedure starting from a suitable initial estimate, where
     \label{fig:nls-procedure}
 \end{figure}
 
-The vector $\vecx$ is sometimes called a \emph{state variable}, which is typically used to the describe the physical state of an object or a system.
+The vector $\vecx$ is sometimes called a \emph{state variable}, which is typically used to describe the physical state of an object or a system.
 The pose of a camera in the world is an example of such a state variable.
 Notice that we can concatenate several different state variables into the vector $\vecx$, 
 \begin{equation}
@@ -71,7 +71,7 @@ Notice that we can concatenate several different state variables into the vector
     \vecx_p
   \end{bmatrix},
 \end{equation}
-and that the equations $e_i(\vecx)$ can be defined to operate on one or more these $p$ different state variables.
+and that the equations $e_i(\vecx)$ can be defined to operate on one or more of these $p$ different state variables.
 This lets us use the least squares framework to estimate several state variables at once, such as the poses of a whole set of cameras, instead of only one.
 
 To conveniently represent state variables over both vector spaces and manifolds, we will broaden the definition of the plus and minus operators given in Section~\ref{sec:lie-plus-and-minus}.
