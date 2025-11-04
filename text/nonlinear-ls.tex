@@ -525,7 +525,7 @@ The measurement error is given by
 \end{equation}
 leading to the covariance weighted nonlinear least squares problem
 \begin{equation} \label{eq:range-MAP-weighted}
-  \hat{\vecx}^{\text{MAP}} = \argmin_\vecx \sum^n_{i=1} \frac{1}{\sigma_i} \left( \norm{\vecx - \vecl_i} - r_i \right)^2
+  \hat{\vecx}^{\text{MAP}} = \argmin_\vecx \sum^n_{i=1} \frac{1}{\sigma_i^2} \left( \norm{\vecx - \vecl_i} - r_i \right)^2
 \end{equation}
 By linearising the problem according to \eqref{eq:linearised-range-error} and \eqref{eq:MAP-linearised-objective-function}, we get the linearised least squares problem
 \begin{align} \label{eq:range-MAP-linearised-problem}
