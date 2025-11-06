@@ -388,7 +388,7 @@ Using \eqref{eq:linearised-objective-function}, we get the linearised least squa
 where
 \begin{align}
   \matA_i &= \jac{e_i}{\hat{\vecx}} = \frac{(\hat{\vecx} - \vecl_i)\trans}{\norm{\hat{\vecx} - \vecl_i}}\\
-  b_i &= r_i - e_i(\hat{\vecx}) = r_i - \norm{\hat{\vecx} - \vecl_i}
+  b_i &= - e_i(\hat{\vecx}) = r_i - \norm{\hat{\vecx} - \vecl_i}
 \end{align}
 and
 \begin{equation}
@@ -535,7 +535,7 @@ By linearising the problem according to \eqref{eq:linearised-range-error} and \e
 where
 \begin{align}
   \matA_i &= \frac{1}{\sigma_i}\jac{e_i}{\hat{\vecx}} = \frac{1}{\sigma_i}\frac{(\hat{\vecx} - \vecl_i)\trans}{\norm{\hat{\vecx} - \vecl_i}}\\
-  b_i &= \frac{1}{\sigma_i}(r_i - e_i(\hat{\vecx})) = \frac{1}{\sigma_i}(r_i - \norm{\hat{\vecx} - \vecl_i}).
+  b_i &= - \frac{1}{\sigma_i} e_i(\hat{\vecx}) = \frac{1}{\sigma_i}(r_i - \norm{\hat{\vecx} - \vecl_i}).
 \end{align}
 
 Figure~\ref{fig:range-localisation-weighted} illustrates the difference between plain least squares and covariance weighted least squares.
